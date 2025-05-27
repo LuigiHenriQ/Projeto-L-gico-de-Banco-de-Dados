@@ -28,3 +28,43 @@ JOIN ENDERECO e ON f.ENDERECO_idENDERECO = e.idENDERECO;
 SELECT c1.nome AS Categoria, c2.nome AS Subcategoria
 FROM CATEGORIA_PRODUTO c1
 JOIN CATEGORIA_PRODUTO c2 ON c2.categoria_pai = c1.idCATEGORIA;
+
+-- Adicionar novas queries:
+
+-- 6. Quantos pedidos foram feitos por cada cliente (com tipo)
+SELECT 
+    c.nome AS Cliente,
+    CASE 
+        WHEN cp.idCLIENTE_PF IS NOT NULL THEN 'Pessoa Física'
+        WHEN cj.idCLIENTE_PJ IS NOT NULL THEN 'Pessoa Jurídica'
+    END AS Tipo,
+    COUNT(p.idPEDIDO) AS TotalPedidos,
+    SUM(p.valor_total) AS ValorTotal
+FROM CLIENTE c
+LEFT JOIN CLIENTE_PF cp ON c.idCLIENTE = cp.idCLIENTE
+LEFT JOIN CLIENTE_PJ cj ON c.idCLIENTE = cj.idCLIENTE
+LEFT JOIN PEDIDO p ON c.idCLIENTE = p.CLIENTE_idCLIENTE
+GROUP BY c.nome, cp.idCLIENTE_PF, cj.idCLIENTE_PJ
+ORDER BY TotalPedidos DESC;
+
+-- 7. Vendedores que também são fornecedores
+SELECT v.nome AS Vendedor, f.nome AS Fornecedor
+FROM VENDEDOR v
+JOIN FORNECEDOR f ON v.identificacao = f.CNPJ
+WHERE v.tipo = 'PJ';
+
+-- 8. Relação de produtos, fornecedores e estoques (com atributo derivado)
+SELECT 
+    p.nome AS Produto,
+    f.nome AS Fornecedor,
+    SUM(pp.quantidade) AS TotalVendido,
+    CASE
+        WHEN SUM(pp.quantidade) > 10 THEN 'Bem vendido'
+        WHEN SUM(pp.quantidade) > 0 THEN 'Vendas regulares'
+        ELSE 'Sem vendas'
+    END AS StatusVendas
+FROM PRODUTO p
+JOIN FORNECEDOR f ON p.FORNECEDOR_idFORNECEDOR = f.idFORNECEDOR
+LEFT JOIN PEDIDO_PRODUTO pp ON p.idPRODUTO = pp.PRODUTO_idPRODUTO
+GROUP BY p.nome, f.nome
+HAVING SUM(pp.quantidade) > 0 OR SUM(pp.quantidade) IS NULL;
