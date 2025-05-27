@@ -85,3 +85,10 @@ INSERT INTO ENTREGA (PEDIDO_idPEDIDO, status, codigo_rastreio, data_envio, data_
 VALUES 
 (1, 'Entregue', 'BR123456789', '2023-01-10', '2023-01-15', '2023-01-14'),
 (2, 'Preparando', NULL, NULL, NULL, NULL);
+
+INSERT INTO ESTOQUE (local) VALUES ('Armazém SP'), ('Centro de Distribuição RJ');
+
+INSERT INTO ESTOQUE_PRODUTO (ESTOQUE_idESTOQUE, PRODUTO_idPRODUTO, quantidade)
+VALUES 
+(1, 1, 50),  -- 50 unidades do Smartphone X no armazém SP
+(2, 2, 20);   -- 20 unidades do Notebook Pro no CD RJ
