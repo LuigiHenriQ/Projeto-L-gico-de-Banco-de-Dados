@@ -61,3 +61,27 @@ VALUES
 -- Categoria filha
 INSERT INTO CATEGORIA_PRODUTO (nome, descricao, categoria_pai)
 VALUES ('Smartphones Android', 'Aparelhos com sistema Android', 2);
+
+-- Inserção de Produtos
+INSERT INTO PRODUTO (nome, descricao, preco, preco_custo, FORNECEDOR_idFORNECEDOR, CATEGORIA_idCATEGORIA)
+VALUES 
+('Smartphone X', 'Último modelo da marca', 2999.90, 2000.00, 1, 2),
+('Notebook Pro', '16GB RAM, 512GB SSD', 4999.90, 3500.00, 1, 1);
+
+-- Inserção de Pedidos
+INSERT INTO PEDIDO (status, valor_total, CLIENTE_idCLIENTE, FORMA_PAGAMENTO_idFORMA_DE_PAGAMENTO)
+VALUES 
+('Entregue', 2999.90, 1, 1),
+('Processando', 4999.90, 2, 3);
+
+-- Inserção de Itens de Pedido
+INSERT INTO PEDIDO_PRODUTO (PEDIDO_idPEDIDO, PRODUTO_idPRODUTO, quantidade, preco_unitario)
+VALUES 
+(1, 1, 1, 2999.90),
+(2, 2, 1, 4999.90);
+
+-- Inserção de Entregas
+INSERT INTO ENTREGA (PEDIDO_idPEDIDO, status, codigo_rastreio, data_envio, data_entrega_prevista, data_entrega_real)
+VALUES 
+(1, 'Entregue', 'BR123456789', '2023-01-10', '2023-01-15', '2023-01-14'),
+(2, 'Preparando', NULL, NULL, NULL, NULL);
